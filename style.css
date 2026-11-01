@@ -95,13 +95,11 @@ h1, h2, h3, legend, .btn, .menu button, dt, th {
   gap: 16px;
   align-items: start;
 }
-.sidebar { position: sticky; top: 16px; }
 main { min-width: 0; }
 
 @media (max-width: 820px) {
   body { padding: 10px; font-size: 20px; }
   .layout { grid-template-columns: minmax(0, 1fr); }
-  .sidebar { position: static; }
 }
 
 /* ---------- Menu with hand cursor ---------- */
@@ -297,7 +295,6 @@ option { background: #060a33; color: #fff; }
   align-items: flex-end;
   gap: 3px;
   height: 260px;
-  min-width: max-content;
   padding-top: 20px;
 }
 .tl-col {
@@ -307,7 +304,7 @@ option { background: #060a33; color: #fff; }
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  width: 22px;
+  flex: 1 0 18px;
   height: 100%;
   cursor: pointer;
 }
@@ -315,7 +312,8 @@ option { background: #060a33; color: #fff; }
 .tl-col[aria-pressed="true"] .tl-bar { outline: 2px solid #fff; }
 .tl-count { font-size: 16px; color: var(--muted); }
 .tl-bar {
-  width: 16px;
+  width: 75%;
+  max-width: 18px;
   background: #4a62ff;
   border: 1px solid #000;
   display: flex;
