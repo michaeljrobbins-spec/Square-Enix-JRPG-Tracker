@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Square Enix RPG Tracker</title>
+  <meta name="description" content="Track your progress through the Square, Enix and Square Enix RPG catalog.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="window title-window">
+    <h1>Square Enix <span>RPG Tracker</span></h1>
+    <p class="subtitle">A save file for every adventure since 1986.</p>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <nav class="window menu" aria-label="Views">
+        <ul role="tablist">
+          <li><button role="tab" id="tab-list" aria-controls="view-list" aria-selected="true" class="cursor-item">Items</button></li>
+          <li><button role="tab" id="tab-timeline" aria-controls="view-timeline" aria-selected="false" class="cursor-item">Timeline</button></li>
+          <li><button role="tab" id="tab-status" aria-controls="view-status" aria-selected="false" class="cursor-item">Status</button></li>
+        </ul>
+      </nav>
+
+      <section class="window party" aria-labelledby="party-heading">
+        <h2 id="party-heading" class="sr-only">Progress summary</h2>
+        <dl class="stats" id="summary">
+          <div><dt>Games</dt><dd id="sum-total">–</dd></div>
+          <div><dt>Finished</dt><dd id="sum-done">–</dd></div>
+          <div><dt>Playing</dt><dd id="sum-playing">–</dd></div>
+          <div><dt>Avg rating</dt><dd id="sum-avg">–</dd></div>
+        </dl>
+        <div class="bar" aria-hidden="true"><div class="bar-fill" id="sum-bar"></div></div>
+        <p class="bar-label" id="sum-pct"></p>
+      </section>
+
+      <section class="window filters" aria-labelledby="filter-heading">
+        <h2 id="filter-heading">Filter</h2>
+        <label for="q">Search</label>
+        <input type="search" id="q" placeholder="Title, developer, genre…" autocomplete="off">
+
+        <label for="f-franchise">Franchise</label>
+        <select id="f-franchise"><option value="">All franchises</option></select>
+
+        <label for="f-platform">Platform</label>
+        <select id="f-platform"><option value="">All platforms</option></select>
+
+        <label for="f-decade">Decade</label>
+        <select id="f-decade"><option value="">All decades</option></select>
+
+        <label for="f-status">Status</label>
+        <select id="f-status">
+          <option value="">Any status</option>
+          <option value="none">Not started</option>
+          <option value="playing">In progress</option>
+          <option value="done">Finished</option>
+        </select>
+
+        <label for="sort">Sort by</label>
+        <select id="sort">
+          <option value="year">Release year</option>
+          <option value="title">Title</option>
+          <option value="rating">My rating</option>
+        </select>
+
+        <button type="button" id="reset" class="btn">Reset filters</button>
+      </section>
+    </aside>
+
+    <main id="main">
+      <section id="view-list" role="tabpanel" aria-labelledby="tab-list" class="view">
+        <div class="window message" aria-live="polite" id="result-count">Loading catalog…</div>
+        <ol class="game-list" id="game-list"></ol>
+      </section>
+
+      <section id="view-timeline" role="tabpanel" aria-labelledby="tab-timeline" class="view" hidden>
+        <div class="window message">Releases by year. Bars follow the current filters; gold shows what you've finished. Select a year to list its games.</div>
+        <div class="window timeline-window">
+          <div class="timeline" id="timeline"></div>
+        </div>
+        <div class="window year-detail" id="year-detail" hidden></div>
+      </section>
+
+      <section id="view-status" role="tabpanel" aria-labelledby="tab-status" class="view" hidden>
+        <div class="window">
+          <h2>Records by franchise</h2>
+          <table class="records" id="records">
+            <thead><tr><th scope="col">Franchise</th><th scope="col">Done</th><th scope="col">Total</th><th scope="col">Avg</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="window">
+          <h2>Save data</h2>
+          <p>Your statuses and ratings live in this browser's local storage. Export them to back up or move to another device.</p>
+          <div class="save-actions">
+            <button type="button" class="btn" id="export">Export save</button>
+            <label class="btn file-btn">Import save<input type="file" id="import" accept="application/json"></label>
+            <button type="button" class="btn danger" id="wipe">Erase save</button>
+          </div>
+          <p id="save-msg" class="save-msg" aria-live="polite"></p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">Data from catalog.json · Progress saved locally in your browser</footer>
+
+  <template id="game-tpl">
+    <li class="window game">
+      <div class="game-head">
+        <h3 class="game-title"></h3>
+        <span class="game-year"></span>
+      </div>
+      <p class="game-meta"></p>
+      <p class="game-platforms"></p>
+      <div class="game-controls">
+        <fieldset class="status-group">
+          <legend class="sr-only">Status</legend>
+        </fieldset>
+        <label class="rating">
+          <span>Rating</span>
+          <select class="rating-select"></select>
+        </label>
+      </div>
+      <p class="game-stores"></p>
+    </li>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
