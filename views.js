@@ -38,23 +38,30 @@
   const detailEl = $("#year-detail");
   let selectedYear = null;
 
-  function renderTimeline() {
+  /** Every release (version) of the games that pass the filters, limited to versions that fit the platform/decade filters. */
+  function filteredReleases() {
     const f = T.currentFilters();
-    const list = T.applyFilters(T.games, f, { ignoreStatus: true });
-    const dated = T.games.filter((g) => g.year != null).map((g) => g.year);
+    return T.applyFilters(T.games, f, { ignoreStatus: true }).flatMap((g) =>
+      g.versions.filter((v) => T.versionMatches(v, f))
+    );
+  }
+
+  function renderTimeline() {
+    const releases = filteredReleases();
+    const dated = T.games.flatMap((g) => g.versions).filter((v) => v.year != null).map((v) => v.year);
     if (!dated.length) return;
     const minY = Math.min(...dated);
     const maxY = Math.max(...dated);
 
     const byYear = new Map();
     let tba = 0;
-    for (const g of list) {
-      if (g.year == null) { tba++; continue; }
-      const e = byYear.get(g.year) || { total: 0, done: 0, upcoming: 0 };
+    for (const v of releases) {
+      if (v.year == null) { tba++; continue; }
+      const e = byYear.get(v.year) || { total: 0, done: 0, upcoming: 0 };
       e.total++;
-      if (T.statusOf(g.id) === "done") e.done++;
-      if (g.upcoming) e.upcoming++;
-      byYear.set(g.year, e);
+      if (T.statusOf(v.game.id) === "done") e.done++;
+      if (v.upcoming) e.upcoming++;
+      byYear.set(v.year, e);
     }
     const max = Math.max(1, ...[...byYear.values()].map((e) => e.total));
 
@@ -96,29 +103,37 @@
     if (tba) {
       const note = document.createElement("p");
       note.className = "bar-label";
-      note.textContent = `+ ${tba} announced game${tba === 1 ? "" : "s"} without a release year.`;
+      note.textContent = `+ ${tba} announced release${tba === 1 ? "" : "s"} without a year.`;
       timelineEl.parentElement.querySelector(".bar-label")?.remove();
       timelineEl.parentElement.appendChild(note);
     } else {
       timelineEl.parentElement.querySelector(".bar-label")?.remove();
     }
 
-    renderYearDetail(list);
+    renderYearDetail(releases);
   }
 
-  function renderYearDetail(list) {
+  function renderYearDetail(releases) {
     if (selectedYear == null) { detailEl.hidden = true; return; }
-    const items = list.filter((g) => g.year === selectedYear).sort((a, b) => a.title.localeCompare(b.title));
+    const items = releases
+      .filter((v) => v.year === selectedYear)
+      .sort((a, b) => a.game.title.localeCompare(b.game.title));
     if (!items.length) { detailEl.hidden = true; return; }
     const h = document.createElement("h2");
     h.textContent = `${selectedYear} · ${items.length} release${items.length === 1 ? "" : "s"}`;
     const ul = document.createElement("ul");
-    for (const g of items) {
+    for (const v of items) {
+      const g = v.game;
       const li = document.createElement("li");
       const s = T.statusOf(g.id);
       if (s !== "none") li.className = s;
       const r = T.ratingOf(g.id);
-      li.textContent = `${g.title}${g.platforms.length ? ` (${g.platforms.join(", ")})` : ""}${r ? ` — ${r}/10` : ""}`;
+      const isRerelease = g.year != null && v.year > g.year;
+      li.textContent =
+        g.title +
+        (v.platforms.length ? ` (${v.platforms.join(", ")})` : "") +
+        (isRerelease ? ` · first released ${g.year}` : "") +
+        (r ? ` — ${r}/10` : "");
       ul.appendChild(li);
     }
     detailEl.replaceChildren(h, ul);
@@ -195,15 +210,7 @@
     try {
       const data = JSON.parse(await file.text());
       if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("not a save file");
-      const clean = {};
-      for (const [id, v] of Object.entries(data)) {
-        if (!v || typeof v !== "object") continue;
-        const entry = {};
-        if (v.s === "playing" || v.s === "done") entry.s = v.s;
-        const r = Number(v.r);
-        if (entry.s === "done" && Number.isInteger(r) && r >= 1 && r <= 10) entry.r = r;
-        if (Object.keys(entry).length) clean[id] = entry;
-      }
+      const clean = T.cleanSave(data); // also converts saves made per version to per game
       T.save = clean;
       T.refresh();
       say(`Save loaded: ${Object.keys(clean).length} games.`);
