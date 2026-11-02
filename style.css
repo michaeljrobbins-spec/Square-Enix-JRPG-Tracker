@@ -235,9 +235,17 @@ option { background: #060a33; color: #fff; }
 .game-title { font-size: 12px; line-height: 1.6; margin: 0; overflow-wrap: anywhere; }
 .game-year { color: var(--gold); font-size: 22px; white-space: nowrap; }
 .game-year.tba { color: var(--muted); }
-.game-meta, .game-platforms, .game-stores { margin: 0; font-size: 19px; }
+.game-meta, .game-stores { margin: 0; font-size: 19px; }
 .game-meta { color: var(--muted); }
-.game-platforms { color: #dfe3ff; }
+
+.versions { list-style: none; margin: 0; padding: 0; font-size: 19px; color: #dfe3ff; }
+.versions li { display: grid; grid-template-columns: 3.2em 1fr; gap: 0 8px; padding: 1px 0; }
+.versions li + li { border-top: 1px dotted rgba(184, 192, 255, .25); }
+.versions .v-year { color: var(--gold); }
+.versions .v-year.tba { color: var(--muted); }
+.versions .v-dev { color: var(--muted); }
+.versions li.dim { opacity: .45; }
+.versions .badge { margin-left: 4px; }
 .badge {
   display: inline-block;
   font-family: var(--pixel);

@@ -6,7 +6,8 @@ An exercise for ENG6806, where I take the Claude Artifact I created last week an
 `index.html` is a static page (plain HTML, CSS and JavaScript, no build step) that reads `catalog.json` and lets you:
 
 - browse and search the catalog, filtering by franchise, platform, decade and status
-- mark each game Not started, In progress or Finished, and rate finished games 1–10
+- see each game once: catalog entries with the same title (original release, ports, remakes) are grouped into one card that lists every version's year and platforms
+- mark each game Not started, In progress or Finished, and rate finished games 1–10 (the status and rating cover all of its versions)
 - see a timeline of releases by year, and per-franchise completion records
 
 Statuses and ratings are saved in your browser's `localStorage`; use **Status → Export save** to back them up.
