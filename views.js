@@ -32,6 +32,42 @@
     });
   });
 
+  /* ---------- Card / compact list layout ---------- */
+  // Stored separately from the progress save so export/import/erase don't touch it.
+
+  const LAYOUT_KEY = "se-rpg-tracker:layout";
+  const LAYOUTS = ["cards", "compact"];
+  const listEl = $("#game-list");
+  const layoutButtons = [...document.querySelectorAll("[data-layout]")];
+
+  function readLayout() {
+    try {
+      const v = localStorage.getItem(LAYOUT_KEY);
+      return LAYOUTS.includes(v) ? v : "cards";
+    } catch {
+      return "cards";
+    }
+  }
+
+  function applyLayout(layout) {
+    listEl.classList.toggle("compact", layout === "compact");
+    for (const b of layoutButtons) b.setAttribute("aria-pressed", String(b.dataset.layout === layout));
+  }
+
+  for (const b of layoutButtons) {
+    b.addEventListener("click", () => {
+      const layout = b.dataset.layout;
+      applyLayout(layout);
+      try {
+        localStorage.setItem(LAYOUT_KEY, layout);
+      } catch {
+        /* storage unavailable — the choice just won't persist */
+      }
+    });
+  }
+
+  applyLayout(readLayout());
+
   /* ---------- Timeline ---------- */
 
   const timelineEl = $("#timeline");
