@@ -431,20 +431,42 @@ html::before {
 @keyframes twinkle { 50% { opacity: .12; } }
 @keyframes float { 50% { transform: translateY(-6px); } }
 
-/* Header: a crystal on each side, sparkles around the title */
+/* Header: a crystal on each side, ringed by sparkles of different sizes */
 .title-window { overflow: hidden; padding-left: 80px; padding-right: 80px; }
-.header-crystal { position: absolute; top: 50%; transform: translateY(-50%); }
-.header-crystal.left { left: 24px; }
-.header-crystal.right { right: 24px; }
+.crystal-cluster { position: absolute; top: 50%; transform: translateY(-50%); line-height: 0; }
+.crystal-cluster.left { left: 24px; }
+.crystal-cluster.right { right: 24px; }
 .header-crystal svg { animation: float 3s steps(4) infinite; }
-.header-crystal.right svg { animation-delay: 1.5s; }
-.twinkle { position: absolute; left: var(--x); top: var(--y); animation: twinkle 1.6s steps(2) var(--d) infinite; }
+.crystal-cluster.right .header-crystal svg { animation-delay: 1.5s; }
+
+/* Each sparkle is centred on its --x/--y point and slowly swells and fades on its own cycle. */
+.glint {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%) scale(calc(var(--s) * .4));
+  opacity: 0;
+  --s: 1; /* overall size factor, reduced on small screens */
+  animation: glint var(--t, 6s) ease-in-out var(--d, 0s) infinite;
+}
+.glint svg { filter: drop-shadow(0 0 3px rgba(255, 255, 255, .55)); }
+@keyframes glint {
+  0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(calc(var(--s) * .4)); }
+  45% { opacity: 1; transform: translate(-50%, -50%) scale(var(--s)); }
+  60% { opacity: .85; transform: translate(-50%, -50%) scale(calc(var(--s) * .9)); }
+}
+
 @media (max-width: 560px) {
-  .title-window { padding-left: 52px; padding-right: 52px; }
-  .twinkle { display: none; }
-  .header-crystal.left { left: 10px; }
-  .header-crystal.right { right: 10px; }
+  .title-window { padding-left: 58px; padding-right: 58px; }
+  .crystal-cluster.left { left: 14px; }
+  .crystal-cluster.right { right: 14px; }
   .header-crystal svg { width: 33px; height: 57px; }
+  /* Shrink sparkles and pull them 30% closer to the crystal so they stay inside the frame and clear of the title */
+  .glint {
+    --s: .7;
+    left: calc(50% + (var(--x) - 50%) * .7);
+    top: calc(50% + (var(--y) - 50%) * .7);
+  }
 }
 
 /* Menu icons sit between the hand cursor and the label */
@@ -481,7 +503,8 @@ body.ready #game-list:empty + .empty-state { display: flex; }
 .footer { margin-bottom: 8px; }
 
 @media (prefers-reduced-motion: reduce) {
-  body::before, body::after, .twinkle, .sprite svg { animation: none !important; }
+  body::before, body::after, .sprite svg { animation: none !important; }
+  .glint { animation: none; opacity: .8; transform: translate(-50%, -50%) scale(var(--s)); }
 }
 
 .footer {
