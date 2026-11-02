@@ -231,7 +231,7 @@
     const blob = new Blob([JSON.stringify(T.save, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `se-rpg-tracker-save-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `lifestream-save-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(a);
     a.click();
     a.remove();
