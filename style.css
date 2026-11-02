@@ -385,6 +385,7 @@ option { background: #060a33; color: #fff; }
 /* The same card markup is restyled as table-like rows inside a single window. */
 .game-list.compact {
   display: block;
+  container-type: inline-size; /* breakpoints below follow the list's width, not the window's */
   padding: 6px 12px;
   background: linear-gradient(180deg, var(--win-top) 0%, var(--win-bottom) 100%);
   border: 4px solid var(--border);
@@ -434,18 +435,23 @@ option { background: #060a33; color: #fff; }
 .compact .status-group { flex-wrap: nowrap; }
 .compact .status-group label, .compact .rating, .compact .rating select { font-size: 17px; }
 .compact .rating > span { display: none; }
+.compact .status-group label { white-space: nowrap; }
+/* Reserve the rating slot on every row so the columns line up. */
+.compact .rating[hidden] { display: flex; visibility: hidden; }
 /* Finished and in-progress rows keep their colour cue without a frame. */
 .compact .game[data-status="done"] .game-title { color: var(--gold); }
 .compact .game[data-status="playing"] .game-title { color: var(--green); }
 
-@media (max-width: 1100px) {
+@container (max-width: 900px) {
   .compact .game { grid-template-columns: 3.4em minmax(0, 1fr) auto; grid-template-areas: "year title ctrl"; }
   .compact .game-platforms { display: none; }
 }
-@media (max-width: 640px) {
+@container (max-width: 700px) {
   .compact .game {
     grid-template-columns: 3.2em minmax(0, 1fr);
-    grid-template-areas: "year title" ". ctrl";
+    grid-template-areas: "year title" "ctrl ctrl";
   }
-  .compact .game-controls { justify-content: flex-start; flex-wrap: wrap; }
+  .compact .game-controls { grid-column: 1 / -1; justify-content: flex-start; flex-wrap: wrap; gap: 6px; }
+  .compact .status-group label { font-size: 16px; padding: 2px 5px; }
+  .compact .rating[hidden] { display: none; }
 }
