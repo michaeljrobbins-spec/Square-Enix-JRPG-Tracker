@@ -7,6 +7,7 @@ An exercise for ENG6806, where I take the Claude Artifact I created last week an
 
 - browse and search the catalog, filtering by franchise, platform, decade and status
 - mark each game Not started, In progress or Finished, and rate finished games 1–10
+- switch between detailed cards and a compact one-line-per-game list (the page remembers your choice)
 - see a timeline of releases by year, and per-franchise completion records
 
 Statuses and ratings are saved in your browser's `localStorage`; use **Status → Export save** to back them up.
