@@ -13,6 +13,8 @@ An exercise for ENG6806, where I take the Claude Artifact I created last week an
 - see a timeline of releases by year, and per-franchise completion records
 - ask the Sage for three games you haven't started, picked from the franchises and developers of games you rated 7/10 or higher
 
+The pixel art (crystals, swords, spell effects and the rest) is original and drawn in code by `sprites.js`: each sprite is a grid of characters rendered as inline SVG, so there are no image files.
+
 Statuses and ratings are saved in your browser's `localStorage`; use **Status → Export save** to back them up.
 
 ### Publishing on GitHub Pages

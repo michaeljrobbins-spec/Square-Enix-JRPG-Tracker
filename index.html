@@ -14,6 +14,12 @@
   <a class="skip" href="#main">Skip to content</a>
 
   <header class="window title-window">
+    <span class="sprite header-crystal left" data-sprite="crystal" data-scale="4"></span>
+    <span class="sprite header-crystal right" data-sprite="crystal-green" data-scale="4"></span>
+    <span class="sprite twinkle" data-sprite="sparkle" data-scale="3" style="--x: 12%; --y: 18%; --d: 0s"></span>
+    <span class="sprite twinkle" data-sprite="sparkle" data-scale="2" style="--x: 9%; --y: 80%; --d: .7s"></span>
+    <span class="sprite twinkle" data-sprite="sparkle" data-scale="2" style="--x: 90%; --y: 16%; --d: 1.3s"></span>
+    <span class="sprite twinkle" data-sprite="sparkle" data-scale="3" style="--x: 86%; --y: 74%; --d: .4s"></span>
     <h1>The <span>Lifestream</span></h1>
     <p class="subtitle">A Square Enix RPG tracker · a save file for every adventure since 1986.</p>
   </header>
@@ -22,10 +28,10 @@
     <aside class="sidebar">
       <nav class="window menu" aria-label="Views">
         <ul role="tablist">
-          <li><button role="tab" id="tab-list" aria-controls="view-list" aria-selected="true" class="cursor-item">Items</button></li>
-          <li><button role="tab" id="tab-timeline" aria-controls="view-timeline" aria-selected="false" class="cursor-item">Timeline</button></li>
-          <li><button role="tab" id="tab-status" aria-controls="view-status" aria-selected="false" class="cursor-item">Status</button></li>
-          <li><button role="tab" id="tab-sage" aria-controls="view-sage" aria-selected="false" class="cursor-item">Sage</button></li>
+          <li><button role="tab" id="tab-list" aria-controls="view-list" aria-selected="true" class="cursor-item"><span class="sprite menu-icon" data-sprite="potion" data-scale="2"></span>Items</button></li>
+          <li><button role="tab" id="tab-timeline" aria-controls="view-timeline" aria-selected="false" class="cursor-item"><span class="sprite menu-icon" data-sprite="hourglass" data-scale="2"></span>Timeline</button></li>
+          <li><button role="tab" id="tab-status" aria-controls="view-status" aria-selected="false" class="cursor-item"><span class="sprite menu-icon" data-sprite="shield" data-scale="2"></span>Status</button></li>
+          <li><button role="tab" id="tab-sage" aria-controls="view-sage" aria-selected="false" class="cursor-item"><span class="sprite menu-icon" data-sprite="orb-violet" data-scale="2"></span>Sage</button></li>
         </ul>
       </nav>
 
@@ -72,12 +78,25 @@
 
         <button type="button" id="reset" class="btn">Reset filters</button>
       </section>
+
+      <div class="window vignette" aria-hidden="true">
+        <div class="shrine">
+          <span class="sprite" data-sprite="sword" data-scale="3"></span>
+          <span class="sprite float" data-sprite="crystal-green" data-scale="4"></span>
+          <span class="sprite" data-sprite="sword" data-scale="3"></span>
+        </div>
+        <p>Every journey returns to the Lifestream.</p>
+      </div>
     </aside>
 
     <main id="main">
       <section id="view-list" role="tabpanel" aria-labelledby="tab-list" class="view">
         <div class="window message" aria-live="polite" id="result-count">Loading catalog…</div>
         <ol class="game-list" id="game-list"></ol>
+        <div class="window empty-state">
+          <span class="sprite" data-sprite="chest" data-scale="5"></span>
+          <p>You open the chest… but it is empty.</p>
+        </div>
       </section>
 
       <section id="view-timeline" role="tabpanel" aria-labelledby="tab-timeline" class="view" hidden>
@@ -86,11 +105,16 @@
           <div class="timeline" id="timeline"></div>
         </div>
         <div class="window year-detail" id="year-detail" hidden></div>
+        <div class="window spell-hint" aria-hidden="true">
+          <span class="sprite" data-sprite="flame" data-scale="3"></span>
+          <p>Choose a year to scry its releases.</p>
+          <span class="sprite" data-sprite="frost" data-scale="3"></span>
+        </div>
       </section>
 
       <section id="view-status" role="tabpanel" aria-labelledby="tab-status" class="view" hidden>
         <div class="window">
-          <h2>Records by franchise</h2>
+          <h2><span class="sprite h2-icon" data-sprite="shield" data-scale="2"></span>Records by franchise</h2>
           <table class="records" id="records">
             <thead><tr><th scope="col">Franchise</th><th scope="col">Done</th><th scope="col">Total</th><th scope="col">Avg</th></tr></thead>
             <tbody></tbody>
@@ -110,6 +134,7 @@
 
       <section id="view-sage" role="tabpanel" aria-labelledby="tab-sage" class="view" hidden>
         <div class="window sage">
+          <span class="sprite sage-orb float" data-sprite="orb-violet" data-scale="5"></span>
           <h2>The Sage</h2>
           <p id="sage-intro" class="sage-intro" aria-live="polite"></p>
           <ol class="sage-list" id="sage-list"></ol>
@@ -120,7 +145,16 @@
     </main>
   </div>
 
-  <footer class="footer">The Lifestream · Data from catalog.json · Progress saved locally in your browser</footer>
+  <footer class="footer">
+    <div class="footer-art" aria-hidden="true">
+      <span class="sprite" data-sprite="sword" data-scale="2"></span>
+      <span class="sprite" data-sprite="crystal" data-scale="2"></span>
+      <span class="sprite" data-sprite="crystal-green" data-scale="2"></span>
+      <span class="sprite" data-sprite="crystal-red" data-scale="2"></span>
+      <span class="sprite" data-sprite="sword" data-scale="2"></span>
+    </div>
+    The Lifestream · Data from catalog.json · Progress saved locally in your browser
+  </footer>
 
   <template id="game-tpl">
     <li class="window game">
@@ -143,6 +177,7 @@
     </li>
   </template>
 
+  <script src="sprites.js"></script>
   <script src="app.js"></script>
   <script src="views.js"></script>
   <script src="sage.js"></script>

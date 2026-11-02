@@ -17,8 +17,6 @@
 
 * { box-sizing: border-box; }
 
-html { background: var(--bg); }
-
 body {
   margin: 0;
   min-height: 100vh;
@@ -26,10 +24,8 @@ body {
   font-family: var(--body);
   font-size: 22px;
   line-height: 1.2;
-  background:
-    repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 4px),
-    radial-gradient(ellipse at top, #141c5c 0%, var(--bg) 70%);
-  background-attachment: fixed;
+  /* Page background (scanlines, starfield, glow) lives on html and the pseudo-elements below. */
+  background: transparent;
   padding: 16px;
 }
 
@@ -210,6 +206,7 @@ option { background: #060a33; color: #fff; }
 .btn:hover { filter: brightness(1.2); }
 .btn:active { transform: translate(2px, 2px); box-shadow: none; }
 .btn:focus-visible { outline: 2px dashed var(--focus); outline-offset: 2px; }
+.btn[hidden] { display: none; }
 .btn.danger { background: linear-gradient(180deg, #c84040, #5a1010); }
 
 /* ---------- Message box ---------- */
@@ -381,4 +378,92 @@ option { background: #060a33; color: #fff; }
 .sage-reason::after { content: "”"; color: var(--gold); }
 .sage-note { margin: 14px 0 0; color: var(--muted); font-size: 17px; }
 #sage-again { margin-top: 14px; }
+
+/* ---------- Pixel art (sprites.js) ---------- */
+.sprite { display: inline-block; line-height: 0; flex: none; }
+.sprite svg { display: block; filter: drop-shadow(2px 2px 0 rgba(0,0,0,.55)); }
+
+/* Starfield and a green Lifestream glow behind the page */
+html {
+  background:
+    radial-gradient(ellipse 120% 40% at 50% 100%, rgba(63, 224, 122, .18), transparent 70%),
+    var(--bg);
+}
+body::before, body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: repeat;
+  opacity: .3;
+}
+body::before { background-image: var(--starfield-a); animation: twinkle 4s steps(2) infinite; }
+body::after { background-image: var(--starfield-b); background-position: 64px 32px; animation: twinkle 4s steps(2) 2s infinite; }
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 4px),
+    radial-gradient(ellipse at top, #141c5c 0%, transparent 70%);
+}
+
+@keyframes twinkle { 50% { opacity: .12; } }
+@keyframes float { 50% { transform: translateY(-6px); } }
+
+/* Header: a crystal on each side, sparkles around the title */
+.title-window { overflow: hidden; padding-left: 80px; padding-right: 80px; }
+.header-crystal { position: absolute; top: 50%; transform: translateY(-50%); }
+.header-crystal.left { left: 24px; }
+.header-crystal.right { right: 24px; }
+.header-crystal svg { animation: float 3s steps(4) infinite; }
+.header-crystal.right svg { animation-delay: 1.5s; }
+.twinkle { position: absolute; left: var(--x); top: var(--y); animation: twinkle 1.6s steps(2) var(--d) infinite; }
+@media (max-width: 560px) {
+  .title-window { padding-left: 52px; padding-right: 52px; }
+  .twinkle { display: none; }
+  .header-crystal.left { left: 10px; }
+  .header-crystal.right { right: 10px; }
+  .header-crystal svg { width: 33px; height: 57px; }
+}
+
+/* Menu icons sit between the hand cursor and the label */
+.menu .cursor-item { display: flex; align-items: center; gap: 10px; min-height: 40px; }
+.menu-icon svg { width: 18px; height: auto; }
+
+.h2-icon { vertical-align: middle; margin-right: 10px; }
+
+/* Sidebar vignette fills the space under the filters */
+.vignette { text-align: center; }
+.vignette .shrine { display: flex; justify-content: center; align-items: flex-end; gap: 18px; padding-top: 6px; }
+.vignette p { margin: 10px 0 0; color: var(--muted); font-size: 19px; }
+.float svg { animation: float 3s steps(4) infinite; }
+
+/* Empty list: an empty treasure chest (only once the catalog has loaded) */
+.empty-state { display: none; align-items: center; gap: 18px; }
+.empty-state p { margin: 0; }
+body.ready #game-list:empty + .empty-state { display: flex; }
+
+/* Timeline: spell effects in the space under the chart until a year is chosen */
+.spell-hint { display: none; align-items: center; justify-content: center; gap: 20px; color: var(--muted); }
+.spell-hint p { margin: 0; }
+.spell-hint .sprite:first-child svg { animation: float 1.2s steps(2) infinite; }
+.spell-hint .sprite:last-child svg { animation: twinkle 1.6s steps(2) infinite; }
+#year-detail[hidden] + .spell-hint { display: flex; }
+
+/* Sage: a scrying orb in the corner */
+.sage { position: relative; }
+.sage-orb { position: absolute; top: 14px; right: 18px; }
+.sage h2, .sage-intro { padding-right: 64px; }
+
+/* Footer: a row of relics */
+.footer-art { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin-bottom: 8px; }
+.footer { margin-bottom: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  body::before, body::after, .twinkle, .sprite svg { animation: none !important; }
+}
 
