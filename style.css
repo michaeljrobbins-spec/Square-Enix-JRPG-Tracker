@@ -363,3 +363,22 @@ option { background: #060a33; color: #fff; }
   color: var(--muted);
   font-size: 18px;
 }
+
+/* ---------- Sage ---------- */
+.sage-intro { margin: 0 0 14px; font-size: 21px; }
+.sage-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.sage-pick {
+  padding: 10px 14px;
+  background: rgba(6, 10, 51, .55);
+  border: 2px solid var(--border-shadow);
+  border-left: 6px solid var(--gold);
+  border-radius: 4px;
+}
+.sage-pick h3 { font-size: 11px; line-height: 1.6; margin: 0 0 4px; color: var(--gold); }
+.sage-meta { margin: 0; color: var(--muted); font-size: 18px; }
+.sage-reason { margin: 4px 0 0; font-size: 20px; }
+.sage-reason::before { content: "“"; color: var(--gold); }
+.sage-reason::after { content: "”"; color: var(--gold); }
+.sage-note { margin: 14px 0 0; color: var(--muted); font-size: 17px; }
+#sage-again { margin-top: 14px; }
+

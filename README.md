@@ -11,6 +11,7 @@ An exercise for ENG6806, where I take the Claude Artifact I created last week an
 - browse and search the catalog, filtering by franchise, platform, decade and status
 - mark each game Not started, In progress or Finished, and rate finished games 1–10
 - see a timeline of releases by year, and per-franchise completion records
+- ask the Sage for three games you haven't started, picked from the franchises and developers of games you rated 7/10 or higher
 
 Statuses and ratings are saved in your browser's `localStorage`; use **Status → Export save** to back them up.
 

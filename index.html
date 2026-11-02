@@ -25,6 +25,7 @@
           <li><button role="tab" id="tab-list" aria-controls="view-list" aria-selected="true" class="cursor-item">Items</button></li>
           <li><button role="tab" id="tab-timeline" aria-controls="view-timeline" aria-selected="false" class="cursor-item">Timeline</button></li>
           <li><button role="tab" id="tab-status" aria-controls="view-status" aria-selected="false" class="cursor-item">Status</button></li>
+          <li><button role="tab" id="tab-sage" aria-controls="view-sage" aria-selected="false" class="cursor-item">Sage</button></li>
         </ul>
       </nav>
 
@@ -106,6 +107,16 @@
           <p id="save-msg" class="save-msg" aria-live="polite"></p>
         </div>
       </section>
+
+      <section id="view-sage" role="tabpanel" aria-labelledby="tab-sage" class="view" hidden>
+        <div class="window sage">
+          <h2>The Sage</h2>
+          <p id="sage-intro" class="sage-intro" aria-live="polite"></p>
+          <ol class="sage-list" id="sage-list"></ol>
+          <button type="button" class="btn" id="sage-again" hidden>Consult again</button>
+          <p class="sage-note">Suggestions come from games you've rated 7/10 or higher: other games in the same franchises, then the same developers. Only games you haven't started are suggested.</p>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -134,5 +145,6 @@
 
   <script src="app.js"></script>
   <script src="views.js"></script>
+  <script src="sage.js"></script>
 </body>
 </html>
