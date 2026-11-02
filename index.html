@@ -75,7 +75,13 @@
 
     <main id="main">
       <section id="view-list" role="tabpanel" aria-labelledby="tab-list" class="view">
-        <div class="window message" aria-live="polite" id="result-count">Loading catalog…</div>
+        <div class="window message toolbar">
+          <p id="result-count" aria-live="polite">Loading catalog…</p>
+          <div class="layout-toggle" role="group" aria-label="Layout">
+            <button type="button" class="btn" data-layout="cards" aria-pressed="true">Cards</button>
+            <button type="button" class="btn" data-layout="compact" aria-pressed="false">List</button>
+          </div>
+        </div>
         <ol class="game-list" id="game-list"></ol>
       </section>
 

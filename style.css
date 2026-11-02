@@ -215,6 +215,23 @@ option { background: #060a33; color: #fff; }
 /* ---------- Message box ---------- */
 .message { color: var(--text); }
 
+/* ---------- List toolbar and layout toggle ---------- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+}
+.toolbar p { margin: 0; }
+.layout-toggle { display: flex; gap: 6px; }
+.layout-toggle .btn { margin: 0; padding: 8px 10px; }
+.layout-toggle .btn[aria-pressed="true"] {
+  background: linear-gradient(180deg, #fff6a8, var(--gold) 50%, #c79a00);
+  color: #000;
+  text-shadow: none;
+}
+
 /* ---------- Game list ---------- */
 .game-list {
   list-style: none;
@@ -362,4 +379,73 @@ option { background: #060a33; color: #fff; }
   text-align: center;
   color: var(--muted);
   font-size: 18px;
+}
+
+/* ---------- Compact list layout: one line per game ---------- */
+/* The same card markup is restyled as table-like rows inside a single window. */
+.game-list.compact {
+  display: block;
+  padding: 6px 12px;
+  background: linear-gradient(180deg, var(--win-top) 0%, var(--win-bottom) 100%);
+  border: 4px solid var(--border);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 2px var(--border-shadow), inset 0 0 0 4px #000, 0 0 0 2px #000, 4px 6px 0 rgba(0,0,0,.6);
+}
+.compact .game {
+  display: grid;
+  grid-template-columns: 3.4em minmax(0, 1.4fr) minmax(0, 1fr) auto;
+  grid-template-areas: "year title plat ctrl";
+  align-items: center;
+  gap: 4px 14px;
+  padding: 6px 4px 6px 22px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+}
+.compact .game + .game { border-top: 1px dotted var(--border-shadow); }
+.compact .game::before {
+  content: "";
+  position: absolute; left: 2px; top: 50%;
+  border-left: 12px solid #fff;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  transform: translateY(-50%);
+  filter: drop-shadow(2px 2px 0 #000);
+  opacity: 0;
+}
+.compact .game:hover::before, .compact .game:focus-within::before { opacity: 1; }
+.compact .game:hover, .compact .game:focus-within { background: rgba(255,255,255,.06); }
+.compact .game-head { display: contents; }
+.compact .game-title { grid-area: title; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.compact .game-year { grid-area: year; font-size: 20px; }
+.compact .game-platforms {
+  grid-area: plat;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  color: var(--muted); font-size: 18px;
+}
+.compact .game-meta, .compact .game-stores { display: none; }
+.compact .game-controls {
+  grid-area: ctrl;
+  margin: 0; padding: 0; border: 0;
+  flex-wrap: nowrap; gap: 8px;
+  justify-content: flex-end;
+}
+.compact .status-group { flex-wrap: nowrap; }
+.compact .status-group label, .compact .rating, .compact .rating select { font-size: 17px; }
+.compact .rating > span { display: none; }
+/* Finished and in-progress rows keep their colour cue without a frame. */
+.compact .game[data-status="done"] .game-title { color: var(--gold); }
+.compact .game[data-status="playing"] .game-title { color: var(--green); }
+
+@media (max-width: 1100px) {
+  .compact .game { grid-template-columns: 3.4em minmax(0, 1fr) auto; grid-template-areas: "year title ctrl"; }
+  .compact .game-platforms { display: none; }
+}
+@media (max-width: 640px) {
+  .compact .game {
+    grid-template-columns: 3.2em minmax(0, 1fr);
+    grid-template-areas: "year title" ". ctrl";
+  }
+  .compact .game-controls { justify-content: flex-start; flex-wrap: wrap; }
 }
