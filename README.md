@@ -1,7 +1,10 @@
-# Square-Enix-JRPG-Tracker
+# The Lifestream
+
+The Lifestream is a tracker for Square, Enix and Square Enix RPGs, hosted on GitHub Pages.
+
 An exercise for ENG6806, where I take the Claude Artifact I created last week and update it to a GitHub hosted site.
 
-## The tracker
+## The site
 
 `index.html` is a static page (plain HTML, CSS and JavaScript, no build step) that reads `catalog.json` and lets you:
 

@@ -1,6 +1,7 @@
 (() => {
   "use strict";
 
+  // Key predates the Lifestream name; kept so existing saves still load.
   const STORAGE_KEY = "se-rpg-tracker:v1";
   const STANDALONE = "Standalone titles";
   const STATUSES = [
