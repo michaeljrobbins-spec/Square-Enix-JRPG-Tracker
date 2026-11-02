@@ -426,6 +426,17 @@ option { background: #060a33; color: #fff; }
   color: var(--muted); font-size: 18px;
 }
 .compact .game-meta, .compact .game-stores { display: none; }
+/* Per-version lists (cards that group several releases) collapse to one line: "1991 SNES · 1997 PlayStation …". */
+.compact .versions {
+  grid-area: plat;
+  display: block;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  color: var(--muted); font-size: 18px;
+}
+.compact .versions li { display: inline; padding: 0; border: 0; }
+.compact .versions li + li::before { content: " · "; }
+.compact .versions .v-year { margin-right: .3em; }
+.compact .versions .v-dev, .compact .versions .badge { display: none; }
 .compact .game-controls {
   grid-area: ctrl;
   margin: 0; padding: 0; border: 0;
@@ -444,7 +455,7 @@ option { background: #060a33; color: #fff; }
 
 @container (max-width: 900px) {
   .compact .game { grid-template-columns: 3.4em minmax(0, 1fr) auto; grid-template-areas: "year title ctrl"; }
-  .compact .game-platforms { display: none; }
+  .compact .game-platforms, .compact .versions { display: none; }
 }
 @container (max-width: 700px) {
   .compact .game {
