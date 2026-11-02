@@ -353,14 +353,6 @@ option { background: #060a33; color: #fff; }
 .file-btn:focus-within { outline: 2px dashed var(--focus); outline-offset: 2px; }
 .save-msg { color: var(--green); min-height: 1.2em; margin: 10px 0 0; }
 
-.footer {
-  max-width: 1280px;
-  margin: 8px auto 0;
-  text-align: center;
-  color: var(--muted);
-  font-size: 18px;
-}
-
 /* ---------- Sage ---------- */
 .sage-intro { margin: 0 0 14px; font-size: 21px; }
 .sage-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
@@ -467,3 +459,10 @@ body.ready #game-list:empty + .empty-state { display: flex; }
   body::before, body::after, .twinkle, .sprite svg { animation: none !important; }
 }
 
+.footer {
+  max-width: 1280px;
+  margin: 8px auto 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 18px;
+}
