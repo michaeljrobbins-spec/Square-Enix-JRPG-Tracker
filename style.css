@@ -431,42 +431,25 @@ html::before {
 @keyframes twinkle { 50% { opacity: .12; } }
 @keyframes float { 50% { transform: translateY(-6px); } }
 
-/* Header: a crystal on each side, ringed by sparkles of different sizes */
-.title-window { overflow: hidden; padding-left: 80px; padding-right: 80px; }
-.crystal-cluster { position: absolute; top: 50%; transform: translateY(-50%); line-height: 0; }
-.crystal-cluster.left { left: 24px; }
-.crystal-cluster.right { right: 24px; }
-.header-crystal svg { animation: float 3s steps(4) infinite; }
-.crystal-cluster.right .header-crystal svg { animation-delay: 1.5s; }
-
-/* Each sparkle is centred on its --x/--y point and slowly swells and fades on its own cycle. */
-.glint {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  transform: translate(-50%, -50%) scale(calc(var(--s) * .4));
-  opacity: 0;
-  --s: 1; /* overall size factor, reduced on small screens */
-  animation: glint var(--t, 6s) ease-in-out var(--d, 0s) infinite;
+/* Header: a crystal on each side, framing the title.
+   Three columns: each crystal sits centred in the space beside the title, and the side columns never get
+   narrower than the crystal (--cw), so the title wraps between them instead of overlapping. */
+.title-window {
+  --cw: 55px; /* crystal width: keep to multiples of the sprite's 11px so pixels stay even; height follows */
+  display: grid;
+  grid-template-columns: minmax(var(--cw), 1fr) minmax(0, auto) minmax(var(--cw), 1fr);
+  align-items: center;
+  column-gap: 20px;
 }
-.glint svg { filter: drop-shadow(0 0 3px rgba(255, 255, 255, .55)); }
-@keyframes glint {
-  0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(calc(var(--s) * .4)); }
-  45% { opacity: 1; transform: translate(-50%, -50%) scale(var(--s)); }
-  60% { opacity: .85; transform: translate(-50%, -50%) scale(calc(var(--s) * .9)); }
-}
-
+.title-text { min-width: 0; }
+.header-crystal { justify-self: center; }
+.header-crystal svg { width: var(--cw); height: auto; animation: float 3s steps(4) infinite; }
+.header-crystal.right svg { animation-delay: 1.5s; }
 @media (max-width: 560px) {
-  .title-window { padding-left: 58px; padding-right: 58px; }
-  .crystal-cluster.left { left: 14px; }
-  .crystal-cluster.right { right: 14px; }
-  .header-crystal svg { width: 33px; height: 57px; }
-  /* Shrink sparkles and pull them 30% closer to the crystal so they stay inside the frame and clear of the title */
-  .glint {
-    --s: .7;
-    left: calc(50% + (var(--x) - 50%) * .7);
-    top: calc(50% + (var(--y) - 50%) * .7);
-  }
+  .title-window { --cw: 33px; column-gap: 10px; padding-left: 12px; padding-right: 12px; }
+}
+@media (max-width: 360px) {
+  .title-window { --cw: 22px; column-gap: 6px; }
 }
 
 /* Menu icons sit between the hand cursor and the label */
@@ -504,7 +487,6 @@ body.ready #game-list:empty + .empty-state { display: flex; }
 
 @media (prefers-reduced-motion: reduce) {
   body::before, body::after, .sprite svg { animation: none !important; }
-  .glint { animation: none; opacity: .8; transform: translate(-50%, -50%) scale(var(--s)); }
 }
 
 .footer {
